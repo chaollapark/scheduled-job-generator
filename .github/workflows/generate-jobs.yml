@@ -29,14 +29,12 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'scheduled-job-generator/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
       
       - name: Install dependencies
-        working-directory: ./scheduled-job-generator
         run: npm ci
       
       - name: Generate jobs
-        working-directory: ./scheduled-job-generator
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
@@ -54,7 +52,6 @@ jobs:
           fi
       
       - name: Commit state file
-        working-directory: ./scheduled-job-generator
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -73,7 +70,7 @@ jobs:
         with:
           name: job-generation-logs-${{ github.run_number }}
           path: |
-            scheduled-job-generator/rotation-state.json
+            rotation-state.json
           retention-days: 30
 
 
