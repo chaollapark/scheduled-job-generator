@@ -17,12 +17,15 @@ on:
 jobs:
   generate-jobs:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -59,10 +62,7 @@ jobs:
           git diff --staged --quiet || git commit -m "Update rotation state after job generation [skip ci]"
       
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+        run: git push
       
       - name: Upload generation logs
         if: always()
