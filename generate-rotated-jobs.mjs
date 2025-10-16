@@ -41,7 +41,6 @@ const openai = USE_AZURE_OPENAI
       apiKey: AZURE_OPENAI_API_KEY,
       endpoint: AZURE_OPENAI_ENDPOINT,
       apiVersion: AZURE_OPENAI_API_VERSION,
-      deployment: AZURE_OPENAI_DEPLOYMENT,
     })
   : new OpenAI({ apiKey: OPENAI_API_KEY });
 
