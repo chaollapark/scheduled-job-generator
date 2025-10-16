@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
-import OpenAI from 'openai';
+import OpenAI, { AzureOpenAI } from 'openai';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -37,11 +37,11 @@ if (!OPENAI_API_KEY && !USE_AZURE_OPENAI) {
 
 // Initialize OpenAI client (supports Azure OpenAI when configured)
 const openai = USE_AZURE_OPENAI
-  ? new OpenAI({
+  ? new AzureOpenAI({
       apiKey: AZURE_OPENAI_API_KEY,
-      baseURL: `${AZURE_OPENAI_ENDPOINT.replace(/\/$/, '')}/openai/deployments/${AZURE_OPENAI_DEPLOYMENT}`,
-      defaultHeaders: { 'api-key': AZURE_OPENAI_API_KEY },
-      defaultQuery: { 'api-version': AZURE_OPENAI_API_VERSION }
+      endpoint: AZURE_OPENAI_ENDPOINT,
+      apiVersion: AZURE_OPENAI_API_VERSION,
+      deployment: AZURE_OPENAI_DEPLOYMENT,
     })
   : new OpenAI({ apiKey: OPENAI_API_KEY });
 
@@ -264,7 +264,7 @@ Required JSON format:
 }`;
 
     const completion = await openai.chat.completions.create({
-      // For Azure OpenAI, the SDK uses the deployment via baseURL; we still pass model (deployment name)
+      // For Azure OpenAI, deployment is set in the client; for OpenAI, we specify the model
       model: USE_AZURE_OPENAI ? AZURE_OPENAI_DEPLOYMENT : "gpt-4o-mini",
       messages: [
         {
