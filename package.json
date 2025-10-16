@@ -1,0 +1,33 @@
+{
+  "name": "scheduled-job-generator",
+  "version": "1.0.0",
+  "description": "Automated job generation with rotation through 13,000 entities - generates 2000 jobs at 9:00 and 2000 jobs at 13:00 daily",
+  "type": "module",
+  "main": "generate-rotated-jobs.mjs",
+  "scripts": {
+    "verify": "node verify-setup.mjs",
+    "generate": "node generate-rotated-jobs.mjs",
+    "generate:2000": "node generate-rotated-jobs.mjs 2000",
+    "generate:test": "node generate-rotated-jobs.mjs 10",
+    "reset-state": "echo '{\"currentIndex\":0,\"lastRun\":null,\"totalGenerated\":0}' > rotation-state.json"
+  },
+  "keywords": [
+    "job-generation",
+    "automation",
+    "cron",
+    "github-actions",
+    "openai",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.0",
+    "openai": "^4.47.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
